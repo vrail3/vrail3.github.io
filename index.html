@@ -109,11 +109,6 @@
                 width: auto; /* Revert button width for larger screens */
             }
         }
-        @keyframes screenShake {
-            0%, 100% { transform: translate(0, 0); }
-            10%, 30%, 50%, 70%, 90% { transform: translate(-10px, 0); }
-            20%, 40%, 60%, 80% { transform: translate(10px, 0); }
-        }
         .shake {
             animation: shake 1s ease-in-out;
         }
@@ -133,18 +128,51 @@
         .black-background {
             background-color: black !important;
         }
+        #jumpscare {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: transparent; /* Set background to transparent */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            transform: scale(0.5);
+            transition: transform 0.8s ease-in-out, opacity 0.8s ease-in-out; /* Speed up animation */
+            z-index: 9999; /* Ensure it is in front of everything */
+        }
+        .show {
+            opacity: 1 !important;
+            transform: scale(1.5) !important; /* Reduced scale */
+        }
+        .fade-out {
+            opacity: 0 !important;
+        }
+        .hidden {
+            opacity: 0;
+            transition: none; /* Remove fade-in transition */
+        }
+        .visible {
+            opacity: 1;
+            transition: none; /* Remove fade-in transition */
+        }
     </style>
 </head>
 <body>
+    <div id="jumpscare">
+        <img src="skull.svg" alt="Skull" style="width: 50%; height: auto;">
+    </div>
     <canvas id="binaryCanvas"></canvas>
-    <div class="container">
-        <img src="favicon.png" alt="Favicon">
+    <div class="container hidden">
+        <img src="favicon.png" alt="Favicon" class="hidden">
         <h1>You have been hacked!</h1>
         <p>So einfach hätte es passieren können. Pass beim nächsten Mal besser auf, welche Links du öffnest!</p>
         <p>Hier ist der Link zum Video:</p>
         <p><a href="https://www.youtube.com/watch?v=Sp6Herusvc4" id="videoLink" class="button">Video</a></p> <!-- Button for video link -->
     </div>
-    <footer>
+    <footer class="hidden">
         <a href="credits.html" style="color: white;">Credits</a>
     </footer>
     <script>
@@ -220,10 +248,29 @@
             initializeCanvas();
 
             window.addEventListener("load", () => {
-                document.body.classList.add("shake", "black-background");
+                const jumpscare = document.getElementById("jumpscare");
+                const container = document.querySelector(".container");
+                const containerImg = document.querySelector(".container img");
+                const footer = document.querySelector("footer");
+
+                // Show the container, image, and footer from the start
+                container.classList.remove("hidden");
+                containerImg.classList.remove("hidden");
+                footer.classList.remove("hidden");
+
+                setTimeout(() => {
+                    document.body.classList.add("shake", "black-background");
+                    jumpscare.classList.add("show");
+                }, 300); // Make both appear at 0.3 seconds
+
                 setTimeout(() => {
                     document.body.classList.remove("shake", "black-background");
-                }, 1000);
+                    jumpscare.classList.add("fade-out");
+                }, 1100); // Adjust timing for fade-out
+
+                setTimeout(() => {
+                    jumpscare.style.display = "none";
+                }, 1900); // Adjust timing for hiding the element
             });
         });
     </script>
