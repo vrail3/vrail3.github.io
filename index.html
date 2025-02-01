@@ -16,6 +16,7 @@
             height: 100vh;
             background-color: #f0f0f0;
             position: relative;
+            color: white; /* Changed text color to white */
         }
         .container {
             text-align: center;
@@ -28,6 +29,7 @@
                         0 8px 8px hsl(0deg 0% 0% / 0.15),
                         0 16px 16px hsl(0deg 0% 0% / 0.15); /* More pronounced shadow */
             position: relative;
+            color: white; /* Changed text color to white */
         }
         .container img {
             position: absolute;
@@ -58,6 +60,7 @@
                         0 4px 4px hsl(0deg 0% 0% / 0.15),
                         0 8px 8px hsl(0deg 0% 0% / 0.15),
                         0 16px 16px hsl(0deg 0% 0% / 0.15); /* More pronounced shadow */
+            color: white; /* Changed text color to white */
         }
         footer.floating {
             box-shadow: none;
@@ -76,14 +79,31 @@
             z-index: -1;
             box-shadow: 0px 5px 80px 0px;
         }
+        .button {
+            display: inline-block;
+            padding: 10px 20px;
+            font-size: 16px;
+            color: white;
+            background-color: #007BFF;
+            border: none;
+            border-radius: 5px;
+            text-decoration: none;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        .button:hover {
+            background-color: #0056b3;
+        }
     </style>
 </head>
 <body>
     <canvas id="binaryCanvas"></canvas>
     <div class="container">
         <img src="favicon.png" alt="Favicon">
-        <h1>Willkommen auf der statischen Testseite</h1>
-        <p>Dies ist eine einfache statische Seite zu Testzwecken.</p>
+        <h1>You have been hacked!</h1>
+        <p>So einfach hätte es passieren können, pass beim nächsten mal besser auf welche Links du öffnest!</p>
+        <p>Hier ist der Link zum Video:</p>
+        <p><a href="#" id="videoLink" class="button">Video</a></p> <!-- Button for video link -->
     </div>
     <footer>
         <a href="credits.html" style="color: white;">Credits</a>
