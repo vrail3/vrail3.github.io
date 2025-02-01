@@ -52,13 +52,15 @@
             z-index: -1;
         }
         footer {
-            position: absolute;
-            bottom: 50px; /* Move up a bit more to ensure visibility on mobile */
-            width: auto;
+            position: fixed; /* Fix the footer at the bottom */
+            bottom: 20px; /* Move up a bit from the bottom */
+            left: 50%;
+            transform: translateX(-50%);
+            width: auto; /* Ensure it is not full width */
             text-align: center;
             background: #333; /* Changed background to dark grey */
             padding: 10px;
-            border-radius: 0.4em;
+            border-radius: 0.4em; /* Rounded corners */
             box-shadow: 0 1px 1px hsl(0deg 0% 0% / 0.15),
                         0 2px 2px hsl(0deg 0% 0% / 0.15),
                         0 4px 4px hsl(0deg 0% 0% / 0.15),
