@@ -30,6 +30,7 @@
                         0 16px 16px hsl(0deg 0% 0% / 0.15); /* More pronounced shadow */
             position: relative;
             color: white; /* Changed text color to white */
+            max-width: 90%; /* Ensure container doesn't exceed viewport width */
         }
         .container img {
             position: absolute;
@@ -38,6 +39,8 @@
             transform: translateX(-50%);
             width: 200px; /* Increased size by 200% */
             height: 200px; /* Increased size by 200% */
+            max-width: 100%; /* Ensure image is responsive */
+            height: auto; /* Maintain aspect ratio */
         }
         /* Ensure the canvas covers the full viewport */
         canvas {
@@ -90,9 +93,16 @@
             text-decoration: none;
             cursor: pointer;
             transition: background-color 0.3s ease;
+            width: 100%; /* Make button full width on mobile */
+            box-sizing: border-box; /* Include padding and border in element's total width and height */
         }
         .button:hover {
             background-color: #0056b3;
+        }
+        @media (min-width: 600px) {
+            .button {
+                width: auto; /* Revert button width for larger screens */
+            }
         }
     </style>
 </head>
