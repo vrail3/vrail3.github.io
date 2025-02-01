@@ -17,6 +17,7 @@
             background-color: #f0f0f0;
             position: relative;
             color: white; /* Changed text color to white */
+            overflow: hidden; /* Prevent scrolling on mobile */
         }
         .container {
             text-align: center;
@@ -52,7 +53,7 @@
         }
         footer {
             position: absolute;
-            bottom: 30px; /* Moved up a bit */
+            bottom: 10px; /* Adjust position to avoid white bar */
             width: auto;
             text-align: center;
             background: #333; /* Changed background to dark grey */
@@ -74,7 +75,7 @@
             display: block;
             width: 50%;
             height: 50%;
-            background: white;
+            background: transparent; /* Remove white bar */
             position: absolute;
             bottom: 0px;
             left: 50%;
