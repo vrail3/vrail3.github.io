@@ -14,7 +14,7 @@
             justify-content: center;
             align-items: center;
             height: 100vh;
-            background-color: #f0f0f0;
+            background-color: black; /* Set initial background color to black */
             position: relative;
             color: white; /* Changed text color to white */
             overflow: hidden; /* Prevent scrolling on mobile */
@@ -109,6 +109,30 @@
                 width: auto; /* Revert button width for larger screens */
             }
         }
+        @keyframes screenShake {
+            0%, 100% { transform: translate(0, 0); }
+            10%, 30%, 50%, 70%, 90% { transform: translate(-10px, 0); }
+            20%, 40%, 60%, 80% { transform: translate(10px, 0); }
+        }
+        .shake {
+            animation: shake 1s ease-in-out;
+        }
+        @keyframes shake {
+            0% { transform: translate(1px, 1px) rotate(0deg); }
+            10% { transform: translate(-1px, -2px) rotate(-1deg); }
+            20% { transform: translate(-3px, 0px) rotate(1deg); }
+            30% { transform: translate(3px, 2px) rotate(0deg); }
+            40% { transform: translate(1px, -1px) rotate(1deg); }
+            50% { transform: translate(-1px, 2px) rotate(-1deg); }
+            60% { transform: translate(-3px, 1px) rotate(0deg); }
+            70% { transform: translate(3px, 1px) rotate(-1deg); }
+            80% { transform: translate(-1px, -1px) rotate(1deg); }
+            90% { transform: translate(1px, 2px) rotate(0deg); }
+            100% { transform: translate(1px, -2px) rotate(-1deg); }
+        }
+        .black-background {
+            background-color: black !important;
+        }
     </style>
 </head>
 <body>
@@ -124,73 +148,84 @@
         <a href="credits.html" style="color: white;">Credits</a>
     </footer>
     <script>
-        const canvas = document.getElementById("binaryCanvas");
-        const ctx = canvas.getContext("2d");
+        document.addEventListener("DOMContentLoaded", () => {
+            const canvas = document.getElementById("binaryCanvas");
+            const ctx = canvas.getContext("2d");
 
-        // Font settings
-        const fontSize = 20;
-        const fontFamily = `"Fira Code", "Cascadia Code", "Consolas", "Ubuntu Mono", "Courier New", monospace`;
+            // Font settings
+            const fontSize = 20;
+            const fontFamily = `"Fira Code", "Cascadia Code", "Consolas", "Ubuntu Mono", "Courier New", monospace`;
 
-        // Wait for fonts to load before setting them
-        document.fonts.ready.then(() => {
-            ctx.font = `${fontSize}px ${fontFamily}`;
-            initializeCanvas(); // Now initialize everything after font loads
+            // Wait for fonts to load before setting them
+            document.fonts.ready.then(() => {
+                ctx.font = `${fontSize}px ${fontFamily}`;
+                initializeCanvas(); // Now initialize everything after font loads
+            });
+
+            function initializeCanvas() {
+                resizeCanvas();
+                initializeGrid();
+                animate();
+            }
+
+            function resizeCanvas() {
+                canvas.width = window.innerWidth;
+                canvas.height = window.innerHeight;
+            }
+            window.addEventListener("resize", resizeCanvas);
+
+            let cols, rows, grid;
+            let frameCount = 0;
+
+            function initializeGrid() {
+                ctx.font = `${fontSize}px ${fontFamily}`;
+                const charWidth = ctx.measureText("0").width;
+                cols = Math.floor(canvas.width / charWidth);
+                rows = Math.floor(canvas.height / fontSize);
+                grid = Array.from({ length: rows }, () =>
+                    Array.from({ length: cols }, () => Math.round(Math.random()).toString())
+                );
+            }
+
+            function updateGrid() {
+                if (frameCount % 5 !== 0) return;
+                grid.forEach((row, r) =>
+                    row.forEach((_, c) => {
+                        if (Math.random() < 0.02) grid[r][c] = Math.round(Math.random()).toString();
+                    })
+                );
+            }
+
+            function drawGrid() {
+                ctx.fillStyle = "black";
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+                const flashAlpha = 0.95 + 0.05 * Math.sin(Date.now() / 500);
+                ctx.fillStyle = `rgba(0, 255, 0, ${flashAlpha})`;
+
+                grid.forEach((row, r) =>
+                    row.forEach((digit, c) => {
+                        ctx.fillText(digit, c * ctx.measureText("0").width, (r + 1) * fontSize);
+                    })
+                );
+            }
+
+            function animate() {
+                frameCount++;
+                updateGrid();
+                drawGrid();
+                requestAnimationFrame(animate);
+            }
+
+            initializeCanvas();
+
+            window.addEventListener("load", () => {
+                document.body.classList.add("shake", "black-background");
+                setTimeout(() => {
+                    document.body.classList.remove("shake", "black-background");
+                }, 1000);
+            });
         });
-
-        function initializeCanvas() {
-            resizeCanvas();
-            animate();
-        }
-
-        function resizeCanvas() {
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
-            initializeGrid();
-        }
-        window.addEventListener("resize", resizeCanvas);
-
-        let cols, rows, grid;
-        let frameCount = 0;
-
-        function initializeGrid() {
-            ctx.font = `${fontSize}px ${fontFamily}`;
-            const charWidth = ctx.measureText("0").width;
-            cols = Math.floor(canvas.width / charWidth);
-            rows = Math.floor(canvas.height / fontSize);
-            grid = Array.from({ length: rows }, () =>
-                Array.from({ length: cols }, () => Math.round(Math.random()).toString())
-            );
-        }
-
-        function updateGrid() {
-            if (frameCount % 5 !== 0) return;
-            grid.forEach((row, r) =>
-                row.forEach((_, c) => {
-                    if (Math.random() < 0.02) grid[r][c] = Math.round(Math.random()).toString();
-                })
-            );
-        }
-
-        function drawGrid() {
-            ctx.fillStyle = "black";
-            ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-            const flashAlpha = 0.95 + 0.05 * Math.sin(Date.now() / 500);
-            ctx.fillStyle = `rgba(0, 255, 0, ${flashAlpha})`;
-
-            grid.forEach((row, r) =>
-                row.forEach((digit, c) => {
-                    ctx.fillText(digit, c * ctx.measureText("0").width, (r + 1) * fontSize);
-                })
-            );
-        }
-
-        function animate() {
-            frameCount++;
-            updateGrid();
-            drawGrid();
-            requestAnimationFrame(animate);
-        }
     </script>
 </body>
 </html>
