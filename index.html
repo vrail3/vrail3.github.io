@@ -14,22 +14,99 @@
             justify-content: center;
             align-items: center;
             height: 100vh;
-            background: url('https://giphy.com/embed/V4NSR1NG2p0KeJJyr5') no-repeat center center fixed;
-            background-size: cover;
+            background-color: #f0f0f0;
         }
         .container {
             text-align: center;
-            background: rgba(255, 255, 255, 0.8);
+            background: white;
             padding: 20px;
             border-radius: 8px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         }
+        /* Ensure the canvas covers the full viewport */
+        canvas {
+            display: block;
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: -1;
+        }
     </style>
 </head>
 <body>
+    <canvas id="binaryCanvas"></canvas>
     <div class="container">
         <h1>Willkommen auf der statischen Testseite</h1>
         <p>Dies ist eine einfache statische Seite zu Testzwecken.</p>
     </div>
+    <script>
+        const canvas = document.getElementById("binaryCanvas");
+        const ctx = canvas.getContext("2d");
+
+        // Font settings
+        const fontSize = 20;
+        const fontFamily = `"Fira Code", "Cascadia Code", "Consolas", "Ubuntu Mono", "Courier New", monospace`;
+
+        // Wait for fonts to load before setting them
+        document.fonts.ready.then(() => {
+            ctx.font = `${fontSize}px ${fontFamily}`;
+            initializeCanvas(); // Now initialize everything after font loads
+        });
+
+        function initializeCanvas() {
+            resizeCanvas();
+            animate();
+        }
+
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            initializeGrid();
+        }
+        window.addEventListener("resize", resizeCanvas);
+
+        let cols, rows, grid;
+        let frameCount = 0;
+
+        function initializeGrid() {
+            ctx.font = `${fontSize}px ${fontFamily}`;
+            const charWidth = ctx.measureText("0").width;
+            cols = Math.floor(canvas.width / charWidth);
+            rows = Math.floor(canvas.height / fontSize);
+            grid = Array.from({ length: rows }, () =>
+                Array.from({ length: cols }, () => Math.round(Math.random()).toString())
+            );
+        }
+
+        function updateGrid() {
+            if (frameCount % 5 !== 0) return;
+            grid.forEach((row, r) =>
+                row.forEach((_, c) => {
+                    if (Math.random() < 0.02) grid[r][c] = Math.round(Math.random()).toString();
+                })
+            );
+        }
+
+        function drawGrid() {
+            ctx.fillStyle = "black";
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            const flashAlpha = 0.95 + 0.05 * Math.sin(Date.now() / 500);
+            ctx.fillStyle = `rgba(0, 255, 0, ${flashAlpha})`;
+
+            grid.forEach((row, r) =>
+                row.forEach((digit, c) => {
+                    ctx.fillText(digit, c * ctx.measureText("0").width, (r + 1) * fontSize);
+                })
+            );
+        }
+
+        function animate() {
+            frameCount++;
+            updateGrid();
+            drawGrid();
+            requestAnimationFrame(animate);
+        }
+    </script>
 </body>
 </html>
