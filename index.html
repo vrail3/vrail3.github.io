@@ -116,17 +116,24 @@
             align-items: center;
             justify-content: center;
             opacity: 0;
-            transform: scale(.5);
-            transition: all .8s ease-in-out;
+            transform: scale(0.4);
+            transform-origin: center center;
+            transition: transform 0.8s cubic-bezier(0.23, 1, 0.32, 1), opacity 0.8s ease-in-out;
             z-index: 9999;
+            pointer-events: none;
         }
 
-        #jumpscare img { width: 50%; }
+        #jumpscare img { 
+            width: 50%;
+            max-width: 500px;
+            object-fit: contain;
+        }
 
         /* States */
         .show { 
             opacity: 1 !important;
-            transform: scale(1.2) !important;
+            transform: scale(1.6) !important;
+            transform-origin: center center !important;
         }
         .fade-out {
             opacity: 0 !important;
