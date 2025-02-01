@@ -16,16 +16,22 @@
                       0 16px 16px hsl(0deg 0% 0% / 0.15);
         }
 
-        body {
+        html, body {
             margin: 0;
-            height: 100vh;
+            padding: 0;
+            height: 100%;
+            width: 100%;
+            overflow: hidden;
+            position: fixed;
+        }
+
+        body {
             display: flex;
             align-items: center;
             justify-content: center;
             font-family: Arial, sans-serif;
             background: black;
             color: white;
-            overflow: hidden;
         }
 
         /* Common box styles */
@@ -118,9 +124,11 @@
             opacity: 0;
             transform: scale(0.4);
             transform-origin: center center;
-            transition: transform 0.8s cubic-bezier(0.23, 1, 0.32, 1), opacity 0.8s ease-in-out;
+            transition: transform 0.8s cubic-bezier(0.19, 1, 0.22, 1), opacity 0.5s ease-in-out;
             z-index: 9999;
             pointer-events: none;
+            touch-action: none;
+            -webkit-overflow-scrolling: none;
         }
 
         #jumpscare img { 
@@ -132,7 +140,7 @@
         /* States */
         .show { 
             opacity: 1 !important;
-            transform: scale(1.6) !important;
+            transform: scale(2.5) !important;
             transform-origin: center center !important;
         }
         .fade-out {
