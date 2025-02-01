@@ -145,18 +145,20 @@
         }
         .show {
             opacity: 1 !important;
-            transform: scale(1.5) !important; /* Reduced scale */
+            transform: scale(1.2) !important; /* Reduced from 1.5 to 1.2 */
         }
         .fade-out {
             opacity: 0 !important;
         }
         .hidden {
             opacity: 0;
-            transition: none; /* Remove fade-in transition */
+            visibility: hidden;
+            transition: opacity 1s ease-in-out, visibility 0s linear 1s;
         }
         .visible {
             opacity: 1;
-            transition: none; /* Remove fade-in transition */
+            visibility: visible;
+            transition: opacity 1s ease-in-out, visibility 0s linear;
         }
     </style>
 </head>
@@ -166,7 +168,7 @@
     </div>
     <canvas id="binaryCanvas"></canvas>
     <div class="container hidden">
-        <img src="favicon.png" alt="Favicon" class="hidden">
+        <img src="favicon.png" alt="Favicon">
         <h1>You have been hacked!</h1>
         <p>So einfach hätte es passieren können. Pass beim nächsten Mal besser auf, welche Links du öffnest!</p>
         <p>Hier ist der Link zum Video:</p>
@@ -253,24 +255,22 @@
                 const containerImg = document.querySelector(".container img");
                 const footer = document.querySelector("footer");
 
-                // Show the container, image, and footer from the start
-                container.classList.remove("hidden");
-                containerImg.classList.remove("hidden");
-                footer.classList.remove("hidden");
-
                 setTimeout(() => {
                     document.body.classList.add("shake", "black-background");
                     jumpscare.classList.add("show");
-                }, 300); // Make both appear at 0.3 seconds
+                }, 300);
 
                 setTimeout(() => {
                     document.body.classList.remove("shake", "black-background");
                     jumpscare.classList.add("fade-out");
-                }, 1100); // Adjust timing for fade-out
+                }, 1100);
 
                 setTimeout(() => {
                     jumpscare.style.display = "none";
-                }, 1900); // Adjust timing for hiding the element
+                    container.classList.add("visible");
+                    containerImg.classList.add("visible");
+                    footer.classList.add("visible");
+                }, 1900);
             });
         });
     </script>
