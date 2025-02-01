@@ -4,116 +4,85 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Hacked?!</title>
-    <link rel="icon" href="favicon.png" type="image/png">
+    <link rel="icon" href="favicon.png">
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            background-color: black; /* Set initial background color to black */
-            position: relative;
-            color: white; /* Changed text color to white */
-            overflow: hidden; /* Prevent scrolling on mobile */
+        /* Base styles */
+        :root {
+            --bg-dark: #333;
+            --shadow: 0 1px 1px hsl(0deg 0% 0% / 0.15),
+                      0 2px 2px hsl(0deg 0% 0% / 0.15),
+                      0 4px 4px hsl(0deg 0% 0% / 0.15),
+                      0 8px 8px hsl(0deg 0% 0% / 0.15),
+                      0 16px 16px hsl(0deg 0% 0% / 0.15);
         }
+
+        body {
+            margin: 0;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: Arial, sans-serif;
+            background: black;
+            color: white;
+            overflow: hidden;
+        }
+
+        /* Common box styles */
+        .box {
+            background: var(--bg-dark);
+            border-radius: 8px;
+            box-shadow: var(--shadow);
+            color: white;
+        }
+
+        /* Content layout */
         .container {
             text-align: center;
-            background: #333; /* Changed background to dark grey */
             padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 1px 1px hsl(0deg 0% 0% / 0.15),
-                        0 2px 2px hsl(0deg 0% 0% / 0.15),
-                        0 4px 4px hsl(0deg 0% 0% / 0.15),
-                        0 8px 8px hsl(0deg 0% 0% / 0.15),
-                        0 16px 16px hsl(0deg 0% 0% / 0.15); /* More pronounced shadow */
+            max-width: 90%;
             position: relative;
-            color: white; /* Changed text color to white */
-            max-width: 90%; /* Ensure container doesn't exceed viewport width */
         }
+
         .container img {
             position: absolute;
             top: -155px;
             left: 50%;
             transform: translateX(-50%);
-            width: 200px; /* Increased size by 200% */
-            height: 200px; /* Increased size by 200% */
-            max-width: 100%; /* Ensure image is responsive */
-            height: auto; /* Maintain aspect ratio */
+            width: 200px;
+            max-width: 100%;
+            height: auto;
         }
-        /* Ensure the canvas covers the full viewport */
-        canvas {
-            display: block;
-            position: absolute;
-            top: 0;
-            left: 0;
-            z-index: -1;
-        }
+
         footer {
-            position: fixed; /* Fix the footer at the bottom */
-            bottom: 20px; /* Move up a bit from the bottom */
+            position: fixed;
+            bottom: 20px;
             left: 50%;
             transform: translateX(-50%);
-            width: auto; /* Ensure it is not full width */
-            text-align: center;
-            background: #333; /* Changed background to dark grey */
             padding: 10px;
-            border-radius: 0.4em; /* Rounded corners */
-            box-shadow: 0 1px 1px hsl(0deg 0% 0% / 0.15),
-                        0 2px 2px hsl(0deg 0% 0% / 0.15),
-                        0 4px 4px hsl(0deg 0% 0% / 0.15),
-                        0 8px 8px hsl(0deg 0% 0% / 0.15),
-                        0 16px 16px hsl(0deg 0% 0% / 0.15); /* More pronounced shadow */
-            color: white; /* Changed text color to white */
-            max-width: 90%; /* Ensure footer doesn't exceed viewport width on mobile */
-            box-sizing: border-box; /* Include padding and border in element's total width and height */
         }
-        footer.floating {
-            box-shadow: none;
-            position: relative;
-        }
-        footer.floating:after {
-            content: "";
-            display: block;
-            width: 50%;
-            height: 50%;
-            background: transparent; /* Remove white bar */
-            position: absolute;
-            bottom: 0px;
-            left: 50%;
-            transform: translateX(-50%);
-            z-index: -1;
-            box-shadow: 0px 5px 80px 0px;
-        }
+
+        footer a { color: white; }
+
+        /* Button styles */
         .button {
             display: inline-block;
             padding: 10px 20px;
-            font-size: 16px;
+            background: #007BFF;
             color: white;
-            background-color: #007BFF;
-            border: none;
             border-radius: 5px;
             text-decoration: none;
-            cursor: pointer;
-            transition: background-color 0.3s ease;
-            width: 100%; /* Make button full width on mobile */
-            box-sizing: border-box; /* Include padding and border in element's total width and height */
+            transition: .3s background;
+            width: 100%;
+            box-sizing: border-box;
         }
-        .button:hover {
-            background-color: #0056b3;
-        }
-        @media (min-width: 600px) {
-            .button {
-                width: auto; /* Revert button width for larger screens */
-            }
-        }
-        .shake {
-            animation: shake 1s ease-in-out;
-        }
+
+        .button:hover { background: #0056b3; }
+        @media (min-width: 600px) { .button { width: auto; } }
+
+        /* Animations */
         @keyframes shake {
-            0% { transform: translate(1px, 1px) rotate(0deg); }
+             0% { transform: translate(1px, 1px) rotate(0deg); }
             10% { transform: translate(-1px, -2px) rotate(-1deg); }
             20% { transform: translate(-3px, 0px) rotate(1deg); }
             30% { transform: translate(3px, 2px) rotate(0deg); }
@@ -125,30 +94,43 @@
             90% { transform: translate(1px, 2px) rotate(0deg); }
             100% { transform: translate(1px, -2px) rotate(-1deg); }
         }
+
+        .shake { animation: shake 1s ease-in-out; }
+
         .black-background {
             background-color: black !important;
         }
+
+        /* Matrix canvas */
+        canvas {
+            position: fixed;
+            inset: 0;
+            z-index: -1;
+        }
+
+        /* Jumpscare */
         #jumpscare {
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
-            background: transparent; /* Set background to transparent */
+            inset: 0;
             display: flex;
-            justify-content: center;
             align-items: center;
+            justify-content: center;
             opacity: 0;
-            transform: scale(0.5);
-            transition: transform 0.8s ease-in-out, opacity 0.8s ease-in-out; /* Speed up animation */
-            z-index: 9999; /* Ensure it is in front of everything */
+            transform: scale(.5);
+            transition: all .8s ease-in-out;
+            z-index: 9999;
         }
-        .show {
+
+        #jumpscare img { width: 50%; }
+
+        /* States */
+        .show { 
             opacity: 1 !important;
-            transform: scale(1.2) !important; /* Reduced from 1.5 to 1.2 */
+            transform: scale(1.2) !important;
         }
         .fade-out {
             opacity: 0 !important;
+            transition: opacity 0.8s ease-in-out;
         }
         .hidden {
             opacity: 0;
@@ -163,116 +145,90 @@
     </style>
 </head>
 <body>
-    <div id="jumpscare">
-        <img src="skull.svg" alt="Skull" style="width: 50%; height: auto;">
-    </div>
+    <div id="jumpscare"><img src="skull.svg" alt="Skull"></div>
     <canvas id="binaryCanvas"></canvas>
-    <div class="container hidden">
+    <div class="container box hidden">
         <img src="favicon.png" alt="Favicon">
         <h1>You have been hacked!</h1>
         <p>So einfach hätte es passieren können. Pass beim nächsten Mal besser auf, welche Links du öffnest!</p>
         <p>Hier ist der Link zum Video:</p>
-        <p><a href="https://www.youtube.com/watch?v=Sp6Herusvc4" id="videoLink" class="button">Video</a></p> <!-- Button for video link -->
+        <p><a href="https://www.youtube.com/watch?v=Sp6Herusvc4" class="button">Video</a></p>
     </div>
-    <footer class="hidden">
-        <a href="credits.html" style="color: white;">Credits</a>
+    <footer class="box hidden">
+        <a href="credits.html">Credits</a>
     </footer>
     <script>
-        document.addEventListener("DOMContentLoaded", () => {
-            const canvas = document.getElementById("binaryCanvas");
-            const ctx = canvas.getContext("2d");
-
-            // Font settings
+        // Matrix animation setup
+        const matrix = (() => {
+            const canvas = document.getElementById('binaryCanvas');
+            const ctx = canvas.getContext('2d');
             const fontSize = 20;
-            const fontFamily = `"Fira Code", "Cascadia Code", "Consolas", "Ubuntu Mono", "Courier New", monospace`;
+            let grid, frameCount = 0;
 
-            // Wait for fonts to load before setting them
-            document.fonts.ready.then(() => {
-                ctx.font = `${fontSize}px ${fontFamily}`;
-                initializeCanvas(); // Now initialize everything after font loads
-            });
-
-            function initializeCanvas() {
-                resizeCanvas();
-                initializeGrid();
-                animate();
-            }
-
-            function resizeCanvas() {
+            const init = () => {
                 canvas.width = window.innerWidth;
                 canvas.height = window.innerHeight;
-            }
-            window.addEventListener("resize", resizeCanvas);
+                ctx.font = `${fontSize}px Consolas`;
+                const cols = Math.floor(canvas.width / ctx.measureText('0').width);
+                const rows = Math.floor(canvas.height / fontSize);
+                grid = Array.from({length: rows}, () => 
+                    Array.from({length: cols}, () => Math.round(Math.random())));
+            };
 
-            let cols, rows, grid;
-            let frameCount = 0;
+            const draw = () => {
+                if (frameCount++ % 5 === 0) {
+                    grid.forEach((row, r) => row.forEach((_, c) => {
+                        if (Math.random() < 0.02) grid[r][c] = Math.round(Math.random());
+                    }));
+                }
 
-            function initializeGrid() {
-                ctx.font = `${fontSize}px ${fontFamily}`;
-                const charWidth = ctx.measureText("0").width;
-                cols = Math.floor(canvas.width / charWidth);
-                rows = Math.floor(canvas.height / fontSize);
-                grid = Array.from({ length: rows }, () =>
-                    Array.from({ length: cols }, () => Math.round(Math.random()).toString())
-                );
-            }
-
-            function updateGrid() {
-                if (frameCount % 5 !== 0) return;
-                grid.forEach((row, r) =>
-                    row.forEach((_, c) => {
-                        if (Math.random() < 0.02) grid[r][c] = Math.round(Math.random()).toString();
-                    })
-                );
-            }
-
-            function drawGrid() {
-                ctx.fillStyle = "black";
+                ctx.fillStyle = 'black';
                 ctx.fillRect(0, 0, canvas.width, canvas.height);
+                ctx.fillStyle = `rgba(0, 255, 0, ${0.95 + 0.05 * Math.sin(Date.now() / 500)})`;
 
-                const flashAlpha = 0.95 + 0.05 * Math.sin(Date.now() / 500);
-                ctx.fillStyle = `rgba(0, 255, 0, ${flashAlpha})`;
+                grid.forEach((row, r) => row.forEach((digit, c) => {
+                    ctx.fillText(digit, c * ctx.measureText('0').width, (r + 1) * fontSize);
+                }));
 
-                grid.forEach((row, r) =>
-                    row.forEach((digit, c) => {
-                        ctx.fillText(digit, c * ctx.measureText("0").width, (r + 1) * fontSize);
-                    })
-                );
-            }
+                requestAnimationFrame(draw);
+            };
 
-            function animate() {
-                frameCount++;
-                updateGrid();
-                drawGrid();
-                requestAnimationFrame(animate);
-            }
+            window.addEventListener('resize', init);
+            return { init, draw };
+        })();
 
-            initializeCanvas();
+        // Initialize matrix immediately
+        matrix.init();
+        matrix.draw();
 
-            window.addEventListener("load", () => {
-                const jumpscare = document.getElementById("jumpscare");
-                const container = document.querySelector(".container");
-                const containerImg = document.querySelector(".container img");
-                const footer = document.querySelector("footer");
+        // Animation sequence
+        const animate = () => {
+            const els = {
+                jump: document.getElementById('jumpscare'),
+                cont: document.querySelector('.container'),
+                img: document.querySelector('.container img'),
+                foot: document.querySelector('footer')
+            };
 
-                setTimeout(() => {
-                    document.body.classList.add("shake", "black-background");
-                    jumpscare.classList.add("show");
-                }, 300);
+            [[300, () => {
+                document.body.classList.add('shake', 'black-background');
+                els.jump.classList.add('show');
+            }],
+            [1100, () => {
+                document.body.classList.remove('shake', 'black-background');
+                els.jump.classList.add('fade-out');
+            }],
+            [1900, () => {
+                els.jump.style.display = 'none';
+                [els.cont, els.img, els.foot].forEach(el => {
+                    el.classList.remove('hidden');
+                    el.classList.add('visible');
+                });
+            }]].forEach(([delay, action]) => setTimeout(action, delay));
+        };
 
-                setTimeout(() => {
-                    document.body.classList.remove("shake", "black-background");
-                    jumpscare.classList.add("fade-out");
-                }, 1100);
-
-                setTimeout(() => {
-                    jumpscare.style.display = "none";
-                    container.classList.add("visible");
-                    containerImg.classList.add("visible");
-                    footer.classList.add("visible");
-                }, 1900);
-            });
-        });
+        // Initialize animations on page load
+        window.addEventListener('load', animate);
     </script>
 </body>
 </html>
